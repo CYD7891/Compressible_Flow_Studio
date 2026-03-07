@@ -1,9 +1,8 @@
 # Compressible Flow Studio (CFS)
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Python](https://img.shields.io/badge/Python-3.13%2B-blue)
 ![Tests](https://img.shields.io/badge/tests-pytest-green)
 ![CI](https://img.shields.io/badge/CI-GitHub_Actions-success)
-![Status](https://img.shields.io/badge/status-active-brightgreen)
 
 ![CFS report preview](docs/report_preview.png)
 ![CFS report preview](docs/report_preview2.png)
@@ -11,7 +10,6 @@
 Reliable compressible-flow calculator for isentropic flow, normal shocks, and oblique shocks — with batch CSV input, automated HTML reporting, optional PDF export, and test-backed engineering validation.
 
 ## Contents
-- [Why this project](#why-this-project)
 - [Current capabilities](#current-capabilities)
 - [Quickstart](#quickstart)
 - [Example input format](#example-input-format)
@@ -23,8 +21,6 @@ Reliable compressible-flow calculator for isentropic flow, normal shocks, and ob
 - [Verification philosophy](#verification-philosophy)
 - [Repository structure](#repository-structure)
 - [Development roadmap](#development-roadmap)
-- [Why this is a good portfolio project](#why-this-is-a-good-portfolio-project)
-- [License](#license)
 
 ## Why this project
 Compressible-flow formulas are easy to find, but reliable engineering tools are harder to build well.
@@ -224,16 +220,3 @@ Planned next steps:
 - unit-aware user inputs with pint
 - more formal golden-data validation tables
 - richer report conclusions and comparison views
-
-## Why this is a good portfolio project
-
-This project demonstrates:
-- physics / fluid mechanics knowledge
-- numerical implementation
-- CLI design
-- test-driven engineering workflow
-- report automation
-- error handling and reliability thinking
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
