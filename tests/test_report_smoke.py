@@ -14,9 +14,15 @@ def test_report_contains_real_sections_and_cases(tmp_path: Path):
     html = (out / "report.html").read_text(encoding="utf-8")
 
     assert "Project Summary" in html
+    assert "Abstract" in html
+    assert "Introduction" in html
+    assert "Methods" in html
     assert "Input Cases" in html
     assert "Computed Results" in html
+    assert "Analysis and Discussion" in html
+    assert "Uncertainty and Error Treatment" in html
     assert "Conclusions" in html
+    assert "References" in html
 
     assert "iso_1" in html
     assert "ns_1" in html

@@ -24,7 +24,9 @@ def test_report_contains_error_summary_for_bad_cases(tmp_path: Path):
 
     html = (out / "report.html").read_text(encoding="utf-8")
 
+    assert "Uncertainty and Error Treatment" in html
     assert "Error Summary" in html
+    assert "Case-Level Trace" in html
     assert "good_iso" not in html or "good_iso" in html  # appears elsewhere; not load-bearing
     assert "bad_ns" in html
     assert "bad_os" in html

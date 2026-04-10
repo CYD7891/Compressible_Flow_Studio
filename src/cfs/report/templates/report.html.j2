@@ -5,83 +5,413 @@
     <title>{{ ctx.title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        margin: 24px;
-        color: #1f2937;
+      :root {
+        --ink: #122033;
+        --muted: #5f7083;
+        --line: #cdd6e0;
+        --panel: #ffffff;
+        --soft: #f4f7fb;
+        --soft-strong: #e7eef7;
+        --accent: #0f4c81;
+        --ok-bg: #e8f5ee;
+        --ok-ink: #1b6b43;
+        --bad-bg: #fdecec;
+        --bad-ink: #a3322a;
+        --paper: #ecf1f7;
       }
 
-      h1, h2, h3 {
-        margin-top: 28px;
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top right, rgba(15, 76, 129, 0.08), transparent 26%),
+          linear-gradient(180deg, #f5f8fc 0%, var(--paper) 100%);
+        font-family: "Segoe UI", Calibri, "Trebuchet MS", sans-serif;
+        line-height: 1.58;
+      }
+
+      .page {
+        max-width: 1360px;
+        margin: 0 auto;
+        padding: 28px 26px 42px;
+        background: var(--panel);
+        box-shadow: 0 24px 60px rgba(18, 32, 51, 0.12);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: Cambria, Georgia, "Times New Roman", serif;
+        line-height: 1.2;
+        color: #10243d;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.45rem;
+        string-set: report-title content();
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--soft-strong);
+        font-size: 1.45rem;
+      }
+
+      h3 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin: 0 0 12px;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
       }
 
       code {
-        background: #f3f4f6;
         padding: 2px 6px;
         border-radius: 6px;
+        background: var(--soft);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.94em;
       }
 
+      section {
+        margin-top: 28px;
+      }
+
+      .report-hero {
+        padding: 24px 26px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background:
+          linear-gradient(135deg, rgba(15, 76, 129, 0.1), transparent 38%),
+          linear-gradient(180deg, #fbfdff, #f2f6fb);
+      }
+
+      .eyebrow {
+        margin-bottom: 10px;
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .subtitle {
+        margin-top: 10px;
+        margin-bottom: 18px;
+        max-width: 70ch;
+        color: var(--muted);
+        font-size: 1.02rem;
+      }
+
+      .meta-grid,
+      .metrics,
+      .model-grid,
+      .split-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .meta-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .metrics {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        margin-top: 16px;
+      }
+
+      .model-grid,
+      .split-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .meta-item,
+      .metric-card,
+      .model-card,
       .box {
-        border: 1px solid #d1d5db;
-        border-radius: 12px;
-        padding: 14px 18px;
-        margin-bottom: 20px;
-        background: #fafafa;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .meta-item {
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .meta-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .meta-value {
+        font-size: 0.98rem;
+        font-weight: 600;
+      }
+
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        padding: 12px 0 2px;
+      }
+
+      .toc a {
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--soft);
+        color: #19334f;
+        font-size: 0.92rem;
+      }
+
+      .lead {
+        max-width: 88ch;
+        color: #223b57;
+        font-size: 1.02rem;
+      }
+
+      .metric-card,
+      .model-card,
+      .box {
+        padding: 16px 18px;
+      }
+
+      .metric-value {
+        display: block;
+        margin-bottom: 6px;
+        color: #0f2f51;
+        font-size: 1.9rem;
+        font-weight: 700;
+      }
+
+      .metric-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.86rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .metric-note,
+      .muted,
+      .section-note {
+        color: var(--muted);
+      }
+
+      .metric-note {
+        margin: 0;
+        font-size: 0.92rem;
+      }
+
+      .prose-block {
+        max-width: 96ch;
+      }
+
+      .definition-list {
+        display: grid;
+        grid-template-columns: minmax(140px, 220px) 1fr;
+        gap: 8px 14px;
+        margin: 0;
+      }
+
+      .definition-list dt {
+        font-weight: 700;
+      }
+
+      .definition-list dd {
+        margin: 0;
       }
 
       .table-wrap {
         overflow-x: auto;
-        margin-bottom: 24px;
+        margin-top: 14px;
       }
 
       table {
-        border-collapse: collapse;
         width: 100%;
-        min-width: 1100px;
-        margin-top: 12px;
-        margin-bottom: 24px;
-        font-size: 14px;
+        min-width: 860px;
+        border-collapse: collapse;
+        border: 1px solid var(--line);
+        background: #fff;
+        font-size: 0.93rem;
       }
 
-      th, td {
-        border: 1px solid #d1d5db;
-        padding: 8px 10px;
+      caption {
+        caption-side: bottom;
+        padding-top: 10px;
+        color: var(--muted);
+        font-size: 0.9rem;
         text-align: left;
+      }
+
+      th,
+      td {
+        padding: 9px 10px;
+        border: 1px solid var(--line);
         vertical-align: top;
+        text-align: left;
+        word-break: break-word;
       }
 
       th {
-        background: #f3f4f6;
+        background: var(--soft);
+        font-weight: 700;
       }
 
-      ul {
-        line-height: 1.6;
+      .num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
       }
 
-      .muted {
-        color: #6b7280;
+      .empty-cell {
+        color: #98a4b3;
+      }
+
+      .status-pill {
+        display: inline-block;
+        min-width: 48px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .pill-ok {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+      }
+
+      .pill-error {
+        background: var(--bad-bg);
+        color: var(--bad-ink);
+      }
+
+      .status-error-row td {
+        background: rgba(253, 236, 236, 0.38);
+      }
+
+      ul,
+      ol {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 7px;
       }
 
       .error-box {
-        border: 1px solid #f5c2c7;
-        background: #fff5f5;
+        border-color: #f2c8c4;
+        background: #fff8f7;
       }
 
-      .section-note {
-        margin-top: -8px;
-        margin-bottom: 10px;
+      .figure-card {
+        padding-bottom: 14px;
+      }
+
+      .figure-card img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      .references li {
+        margin-bottom: 6px;
+      }
+
+      .footer-note {
+        margin-top: 28px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.88rem;
       }
 
       @page {
         size: A4 landscape;
-        margin: 12mm;
+        margin: 13mm 12mm 16mm 12mm;
+
+        @bottom-left {
+          content: string(report-title);
+          color: #607284;
+          font-size: 9px;
+        }
+
+        @bottom-right {
+          content: "Page " counter(page) " of " counter(pages);
+          color: #607284;
+          font-size: 9px;
+        }
       }
 
       @media print {
         body {
-          margin: 0;
+          background: #fff;
           font-size: 10px;
-          color: #000;
+        }
+
+        .page {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+          box-shadow: none;
+        }
+
+        .toc {
+          display: none;
+        }
+
+        section {
+          margin-top: 18px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        h2 {
+          font-size: 16px;
+        }
+
+        h3 {
+          font-size: 13px;
+        }
+
+        .report-hero,
+        .meta-item,
+        .metric-card,
+        .model-card,
+        .box {
+          break-inside: avoid;
         }
 
         .table-wrap {
@@ -90,277 +420,318 @@
 
         table {
           min-width: 0;
-          width: 100%;
-          font-size: 9px;
+          font-size: 8.8px;
           table-layout: fixed;
-        }
-
-        th, td {
-          padding: 4px 6px;
-          white-space: normal;
-          word-break: break-word;
-          overflow-wrap: anywhere;
         }
 
         thead {
           display: table-header-group;
         }
 
-        tfoot {
-          display: table-footer-group;
-        }
-
-        tr, td, th {
+        tr,
+        td,
+        th {
+          break-inside: avoid;
           page-break-inside: avoid;
-          break-inside: avoid;
-        }
-
-        h2, h3 {
-          page-break-after: avoid;
-        }
-
-        .box {
-          break-inside: avoid;
-        }
-
-        img {
-          max-width: 100%;
-          height: auto;
         }
       }
     </style>
   </head>
   <body>
-    {% set iso_rows = [] %}
-    {% set ns_rows = [] %}
-    {% set os_rows = [] %}
+    <div class="page">
+      <header class="report-hero" id="top">
+        <div class="eyebrow">Compressible Flow Studio</div>
+        <h1>{{ ctx.title }}</h1>
+        <p class="subtitle">{{ ctx.subtitle }}</p>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Author</span>
+            <span class="meta-value">{{ ctx.author }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-value">{{ ctx.generated_on }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Source Input</span>
+            <span class="meta-value"><code>{{ ctx.inputs_csv }}</code></span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Processed Output</span>
+            <span class="meta-value"><code>{{ ctx.results_csv }}</code></span>
+          </div>
+        </div>
+      </header>
 
-    {% for row in ctx.result_rows %}
-      {% if row["model"] == "isentropic" %}
-        {% set _ = iso_rows.append(row) %}
-      {% elif row["model"] == "normal_shock" %}
-        {% set _ = ns_rows.append(row) %}
-      {% elif row["model"] == "oblique_shock" %}
-        {% set _ = os_rows.append(row) %}
-      {% endif %}
-    {% endfor %}
+      <nav class="toc" aria-label="Report sections">
+        <a href="#summary">Summary</a>
+        <a href="#abstract">Abstract</a>
+        <a href="#introduction">Introduction</a>
+        <a href="#methods">Methods</a>
+        <a href="#inputs">Input Cases</a>
+        <a href="#results">Computed Results</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#uncertainty">Uncertainty</a>
+        <a href="#conclusions">Conclusions</a>
+        <a href="#references">References</a>
+      </nav>
 
-    <h1>{{ ctx.title }}</h1>
+      <section id="summary">
+        <h2>Project Summary</h2>
+        <p class="lead">{{ ctx.objective }}</p>
+        <div class="metrics">
+          {% for metric in ctx.summary_metrics %}
+          <div class="metric-card">
+            <span class="metric-value">{{ metric["value"] }}</span>
+            <span class="metric-label">{{ metric["label"] }}</span>
+            <p class="metric-note">{{ metric["note"] }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
 
-    <div class="box">
-      <p><b>Project Summary</b></p>
-      <ul>
-        <li>Inputs file: <code>{{ ctx.inputs_csv }}</code></li>
-        <li>Results file: <code>{{ ctx.results_csv }}</code></li>
-        <li>Total input cases: <b>{{ ctx.input_rows|length }}</b></li>
-        <li>Successful cases: <b>{{ ctx.ok_count }}</b></li>
-        <li>Error cases: <b>{{ ctx.error_count }}</b></li>
-      </ul>
-      <p class="muted">
-        This report documents the current run of Compressible Flow Studio.
-      </p>
-    </div>
+      <section id="abstract">
+        <h2>Abstract</h2>
+        <div class="box prose-block">
+          <p>{{ ctx.abstract }}</p>
+        </div>
+      </section>
 
-    <h2>Assumptions</h2>
-    <ul>
-      {% for a in ctx.assumptions %}
-      <li>{{ a }}</li>
-      {% endfor %}
-    </ul>
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <div class="prose-block">
+          {% for point in ctx.introduction_points %}
+          <p>{{ point }}</p>
+          {% endfor %}
+        </div>
+      </section>
 
-    <h2>Failure Modes / Limitations</h2>
-    <ul>
-      {% for f in ctx.failure_modes %}
-      <li>{{ f }}</li>
-      {% endfor %}
-    </ul>
-
-    <h2>Input Cases</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            {% for key in ctx.input_columns %}
-            <th>{{ key }}</th>
+      <section id="methods">
+        <h2>Methods</h2>
+        <div class="box">
+          <h3>Computational Procedure</h3>
+          <ul>
+            {% for point in ctx.methods_points %}
+            <li>{{ point }}</li>
             {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in ctx.input_rows %}
-          <tr>
-            {% for key in ctx.input_columns %}
-            <td>{{ row[key] }}</td>
-            {% endfor %}
-          </tr>
+          </ul>
+        </div>
+
+        <div class="model-grid" style="margin-top: 14px;">
+          {% for summary in ctx.model_summaries %}
+            {% if summary["count"] %}
+            <article class="model-card">
+              <h3>{{ summary["label"] }}</h3>
+              <p>{{ summary["description"] }}</p>
+              <dl class="definition-list">
+                <dt>Configured cases</dt>
+                <dd>{{ summary["count"] }}</dd>
+                <dt>Successful</dt>
+                <dd>{{ summary["ok_count"] }}</dd>
+                <dt>Flagged</dt>
+                <dd>{{ summary["error_count"] }}</dd>
+                <dt>Primary inputs</dt>
+                <dd><code>{{ summary["input_fields"] }}</code></dd>
+                <dt>Reported outputs</dt>
+                <dd><code>{{ summary["output_fields"] }}</code></dd>
+              </dl>
+            </article>
+            {% endif %}
           {% endfor %}
-        </tbody>
-      </table>
-    </div>
+        </div>
+      </section>
 
-    <h2>Computed Results</h2>
+      <section id="inputs">
+        <h2>Input Cases</h2>
+        <p class="section-note">
+          Source data are reproduced from the run input table. Blank cells indicate parameters that were not required for that case.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <caption>
+              Table 1. Source case definitions supplied to the solver prior to validation and computation.
+            </caption>
+            <thead>
+              <tr>
+                {% for key in ctx.input_columns %}
+                <th>{{ key }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in ctx.input_rows %}
+              <tr>
+                {% for key in ctx.input_columns %}
+                <td class="{% if key in ctx.input_numeric_columns %}num {% endif %}{% if row[key] in ['', None] %}empty-cell{% endif %}">
+                  {{ row[key] if row[key] not in ['', None] else "—" }}
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <h3>Isentropic Results</h3>
-    <p class="muted section-note">
-      Key outputs for isentropic relations.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>case_id</th>
-            <th>status</th>
-            <th>note</th>
-            <th>T_T0</th>
-            <th>P_P0</th>
-            <th>rho_rho0</th>
-            <th>A_Astar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in iso_rows %}
-          <tr>
-            <td>{{ row["case_id"] }}</td>
-            <td>{{ row["status"] }}</td>
-            <td>{{ row["note"] }}</td>
-            <td>{{ row["T_T0"] }}</td>
-            <td>{{ row["P_P0"] }}</td>
-            <td>{{ row["rho_rho0"] }}</td>
-            <td>{{ row["A_Astar"] }}</td>
-          </tr>
-          {% endfor %}
-          {% if not iso_rows %}
-          <tr>
-            <td colspan="7" class="muted">No isentropic results in this run.</td>
-          </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </div>
+      <section id="results">
+        <h2>Computed Results</h2>
+        <p class="section-note">
+          Processed values are reproduced directly from <code>{{ ctx.results_csv }}</code> for traceability.
+          All ratios are dimensionless unless an angle in degrees is shown.
+        </p>
 
-    <h3>Normal Shock Results</h3>
-    <p class="muted section-note">
-      Downstream state and total-pressure loss across a normal shock.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>case_id</th>
-            <th>status</th>
-            <th>note</th>
-            <th>M2</th>
-            <th>p2_p1</th>
-            <th>rho2_rho1</th>
-            <th>T2_T1</th>
-            <th>p02_p01</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in ns_rows %}
-          <tr>
-            <td>{{ row["case_id"] }}</td>
-            <td>{{ row["status"] }}</td>
-            <td>{{ row["note"] }}</td>
-            <td>{{ row["M2"] }}</td>
-            <td>{{ row["p2_p1"] }}</td>
-            <td>{{ row["rho2_rho1"] }}</td>
-            <td>{{ row["T2_T1"] }}</td>
-            <td>{{ row["p02_p01"] }}</td>
-          </tr>
-          {% endfor %}
-          {% if not ns_rows %}
-          <tr>
-            <td colspan="8" class="muted">No normal shock results in this run.</td>
-          </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Oblique Shock Results</h3>
-    <p class="muted section-note">
-      Weak/strong branch results, shock angle, normal components, and downstream state.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>case_id</th>
-            <th>status</th>
-            <th>branch</th>
-            <th>note</th>
-            <th>beta_deg</th>
-            <th>Mn1</th>
-            <th>Mn2</th>
-            <th>M2</th>
-            <th>p2_p1</th>
-            <th>rho2_rho1</th>
-            <th>T2_T1</th>
-            <th>p02_p01</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in os_rows %}
-          <tr>
-            <td>{{ row["case_id"] }}</td>
-            <td>{{ row["status"] }}</td>
-            <td>{{ row["branch"] }}</td>
-            <td>{{ row["note"] }}</td>
-            <td>{{ row["beta_deg"] }}</td>
-            <td>{{ row["Mn1"] }}</td>
-            <td>{{ row["Mn2"] }}</td>
-            <td>{{ row["M2"] }}</td>
-            <td>{{ row["p2_p1"] }}</td>
-            <td>{{ row["rho2_rho1"] }}</td>
-            <td>{{ row["T2_T1"] }}</td>
-            <td>{{ row["p02_p01"] }}</td>
-          </tr>
-          {% endfor %}
-          {% if not os_rows %}
-          <tr>
-            <td colspan="12" class="muted">No oblique shock results in this run.</td>
-          </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </div>
-
-    <h2>Figures</h2>
-    <div class="box">
-      <h3>Isentropic Area Ratio Curve</h3>
-      <p class="muted">
-        The curve shows A/A* as a function of Mach number for gamma = 1.4.
-        The demo point marks the isentropic sample case at M = 2.
-      </p>
-      <img
-        src="{{ ctx.figure_paths['isentropic_area_ratio'] }}"
-        alt="Isentropic area ratio curve"
-        style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 8px;"
-      />
-    </div>
-
-    <h2>Error Summary</h2>
-    {% if ctx.error_rows %}
-    <div class="box error-box">
-      <p><b>The following cases failed validation or computation:</b></p>
-      <ul>
-        {% for row in ctx.error_rows %}
-        <li>
-          <code>{{ row["case_id"] }}</code> ({{ row["model"] }}):
-          {{ row["note"] }}
-        </li>
+        {% for section in ctx.result_sections %}
+        <article id="{{ section['section_id'] }}" style="margin-top: 18px;">
+          <h3>{{ section["title"] }}</h3>
+          <p class="section-note">{{ section["note"] }}</p>
+          <div class="table-wrap">
+            <table>
+              <caption>{{ section["caption"] }}</caption>
+              <thead>
+                <tr>
+                  {% for key in section["columns"] %}
+                  <th>{{ key }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% if section["rows"] %}
+                  {% for row in section["rows"] %}
+                  <tr class="{% if row['status'] == 'ERROR' %}status-error-row{% endif %}">
+                    {% for key in section["columns"] %}
+                    <td class="{% if key in section['numeric_columns'] %}num {% endif %}{% if row[key] in ['', None] %}empty-cell{% endif %}">
+                      {% if key == "status" %}
+                        <span class="status-pill {% if row[key] == 'OK' %}pill-ok{% else %}pill-error{% endif %}">
+                          {{ row[key] if row[key] not in ['', None] else "—" }}
+                        </span>
+                      {% else %}
+                        {{ row[key] if row[key] not in ['', None] else "—" }}
+                      {% endif %}
+                    </td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="{{ section['columns']|length }}" class="muted">{{ section["empty_message"] }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </article>
         {% endfor %}
-      </ul>
-    </div>
-    {% else %}
-    <p class="muted">No error cases were recorded in this run.</p>
-    {% endif %}
+      </section>
 
-    <h2>Conclusions</h2>
-    <ul>
-      {% for c in ctx.conclusions %}
-      <li>{{ c }}</li>
-      {% endfor %}
-    </ul>
+      <section id="figures">
+        <h2>Figures</h2>
+        <figure class="box figure-card">
+          <h3>Isentropic Area Ratio Curve</h3>
+          <img
+            src="{{ ctx.figure_paths['isentropic_area_ratio'] }}"
+            alt="Isentropic area ratio curve"
+          />
+          <figcaption class="muted">
+            <b>Figure 1.</b> Isentropic area ratio curve, A/A*, as a function of Mach number for gamma = 1.4.
+            The reference point at M = 2 is included for orientation and to help relate the curve to representative tabulated cases.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="analysis">
+        <h2>Analysis and Discussion</h2>
+        <div class="box">
+          <ul>
+            {% for point in ctx.analysis_points %}
+            <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section id="uncertainty">
+        <h2>Uncertainty and Error Treatment</h2>
+        <div class="split-grid">
+          <div class="box">
+            <h3>Uncertainty Framework</h3>
+            <ul>
+              {% for point in ctx.uncertainty_points %}
+              <li>{{ point }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="box error-box">
+            <h3>Error Summary</h3>
+            {% if ctx.error_rows %}
+            <p>
+              The following cases failed validation or computation and should not be interpreted as successful results.
+            </p>
+            <ul>
+              {% for group in ctx.error_groups %}
+              <li><b>{{ group["count"] }} case(s)</b> in <code>{{ group["model"] }}</code>: {{ group["note"] }}</li>
+              {% endfor %}
+            </ul>
+            <div style="margin-top: 14px;">
+              <h3>Case-Level Trace</h3>
+              <ul>
+                {% for row in ctx.error_rows %}
+                <li><code>{{ row["case_id"] }}</code> ({{ row["model"] }}): {{ row["note"] }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% else %}
+            <p class="muted">No error cases were recorded in this run.</p>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <section id="assumptions">
+        <h2>Assumptions</h2>
+        <div class="box">
+          <ul>
+            {% for item in ctx.assumptions %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section id="limitations">
+        <h2>Failure Modes / Limitations</h2>
+        <div class="box">
+          <ul>
+            {% for item in ctx.failure_modes %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section id="conclusions">
+        <h2>Conclusions</h2>
+        <div class="box">
+          <ul>
+            {% for item in ctx.conclusions %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section id="references">
+        <h2>References</h2>
+        <ol class="references">
+          {% for reference in ctx.references %}
+          <li>{{ reference }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+
+      <p class="footer-note">
+        Generated automatically by {{ ctx.author }} from <code>{{ ctx.inputs_csv }}</code> and <code>{{ ctx.results_csv }}</code>.
+      </p>
+    </div>
   </body>
 </html>
